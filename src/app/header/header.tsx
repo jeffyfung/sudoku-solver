@@ -4,19 +4,22 @@ import Link from "next/link";
 import styles from "./header.module.css";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import { usePathname } from "next/navigation";
+import { Cube } from "./cube/cube";
 
-// TODO: small 3D rotating cube next to App Title
 const Header: React.FC<{}> = () => {
   const pathName = usePathname();
 
   return (
     <div className={styles.container}>
-      <div className={styles.appTitle}>Sudoku Solver</div>
-      <div className={styles.githubLink}>
-        <a href="https://atomic-flow-builder.vercel.app/" className={styles.githubButton} target="_blank" rel="noopener noreferrer">
-          <GitHubIcon className={styles.githubIcon} />
-          <span>Code</span>
-        </a>
+      <Cube />
+      <div>
+        <div className={styles.appTitle}>Sudoku Solver</div>
+        <div className={styles.githubLink}>
+          <a href="https://atomic-flow-builder.vercel.app/" className={styles.githubButton} target="_blank" rel="noopener noreferrer">
+            <GitHubIcon className={styles.githubIcon} />
+            <span>Code</span>
+          </a>
+        </div>
       </div>
       {pathName !== "/" && (
         <div className={styles.nav}>
