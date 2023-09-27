@@ -1,0 +1,47 @@
+.pageContainer {
+  display: flex;
+  flex-direction: row;
+  margin-top: 40px;
+  font-family: var(--font-mono);
+}
+
+.container {
+  width: 60%;
+  max-width: 700px;
+}
+
+.table {
+  width: 100%;
+  table-layout: fixed;
+  aspect-ratio: 1/1;
+  border: 2.5px solid white;
+
+  .row {
+    width: 100%;
+
+    .cell {
+      background-color: rgba(128, 128, 128, 0.724);
+      width: 11.111%;
+
+      .input {
+        width: 100%;
+        text-align: center;
+        background-color: inherit;
+        font-size: 36px;
+        border: none;
+        aspect-ratio: 1/1;
+        caret-color: transparent;
+      }
+    }
+  }
+
+  .cell:nth-child(3),
+  .cell:nth-child(6) {
+    border-right: 1px solid white;
+  }
+
+  .row:nth-child(3) > .cell,
+  .row:nth-child(6) > .cell {
+    border-bottom: 2px solid white;
+  }
+}

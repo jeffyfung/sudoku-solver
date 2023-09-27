@@ -1,0 +1,50 @@
+.container {
+  width: 40%;
+  padding: 0 14px;
+}
+
+.title {
+  padding: 5px;
+  position: absolute;
+  left: 10px;
+  top: -13px;
+}
+
+.legend {
+  margin: 0 15px;
+  padding: 0 5px;
+}
+
+.innerContainer {
+  padding: 20px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.button {
+  background-color: rgb(136 51 196);
+  display: block;
+  padding: 5px;
+  font-size: 16px;
+  cursor: grab;
+  border-radius: 10px;
+}
+
+.button:hover {
+  box-shadow: 3px 3px #b4b4b4;
+  opacity: 0.75;
+}
+
+.buttonContainer {
+  display: grid;
+  grid-template-columns: 4fr 1fr;
+  row-gap: 15px;
+  column-gap: 10px;
+}
+
+.tooltipContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
