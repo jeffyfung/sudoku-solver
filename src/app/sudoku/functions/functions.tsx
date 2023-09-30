@@ -2,6 +2,7 @@ import { axioInstance } from "@/app/util/axios";
 import styles from "./functions.module.css";
 import { Tooltip } from "@mui/material";
 import InfoIcon from "@mui/icons-material/Info";
+import { SolveRequestType, SolveReturnType } from "@/app/api/solve/route";
 
 enum ButtonType {
   SOLVE = "solve",
@@ -9,12 +10,19 @@ enum ButtonType {
   CHECK = "check",
 }
 
-const Functions: React.FC<{}> = () => {
+export interface FunctionsProps {
+  gridData: (string | number)[][];
+  handleRotationAnimation: (gridState: (string | number)[][]) => void;
+}
+
+const Functions: React.FC<FunctionsProps> = ({ gridData, handleRotationAnimation }) => {
   const handleClick = async (type: ButtonType) => {
     switch (type) {
       case ButtonType.SOLVE:
-        const payload: any = {};
-        await axioInstance.post<any>("/api/solve", payload);
+        const payload: SolveRequestType = { currentGridState: gridData };
+        const { data } = await axioInstance.post<SolveReturnType>("/api/solve", payload);
+        const { outputGridState } = structuredClone(data);
+        handleRotationAnimation(structuredClone(outputGridState));
       default:
         // TODO: other api endpoints
         break;

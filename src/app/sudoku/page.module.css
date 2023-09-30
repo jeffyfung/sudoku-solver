@@ -45,3 +45,19 @@
     border-bottom: 2px solid white;
   }
 }
+
+.rotationAnimation {
+  animation: rotateAndZoom 0.8s linear;
+}
+
+@keyframes rotateAndZoom {
+  0% {
+    transform: rotate(0deg) scale(0.3);
+  }
+  50% {
+    transform: rotate(180deg) scale(0.65);
+  }
+  100% {
+    transform: rotate(360deg) scale(1);
+  }
+}
