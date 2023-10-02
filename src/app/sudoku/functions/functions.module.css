@@ -48,3 +48,8 @@
   justify-content: center;
   align-items: center;
 }
+
+.infoIcon {
+  font-size: 32px;
+  cursor: grab;
+}

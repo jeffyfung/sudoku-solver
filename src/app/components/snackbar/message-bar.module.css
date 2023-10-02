@@ -1,0 +1,84 @@
+@value bodyFontSize: 0.9rem;
+
+.container {
+  display: flex;
+  top: 24px;
+  right: 24px;
+  left: auto;
+  z-index: 1400;
+  position: fixed;
+  align-items: center;
+  background-color: #323232;
+  line-height: 1.5;
+  box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.2), 0px 6px 10px 0px rgba(0, 0, 0, 0.14), 0px 1px 18px 0px rgba(0, 0, 0, 0.12);
+  font-style: var(--font-mono);
+  padding: 15px 12px;
+  border-radius: 5px;
+  justify-content: center;
+  flex-direction: column;
+  gap: 3px;
+  justify-content: flex-start;
+  animation-name: fadein;
+  animation-duration: 1s;
+  animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+
+@keyframes fadein {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (min-width: 600px) {
+  .container {
+    min-width: 290px;
+    max-width: 400px;
+  }
+}
+
+.message {
+  padding: 0;
+  flex-wrap: wrap;
+  font-size: bodyFontSize;
+  width: 100%;
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.title {
+  font-size: 1.2rem;
+  color: orange;
+}
+
+.attachment {
+  display: flex;
+  align-items: center;
+  cursor: grab;
+  font-size: 15px;
+}
+
+.icon {
+  font-size: 14px;
+  text-align: center;
+}
+
+.footer {
+  float: right;
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+.checkboxLabel {
+  padding: 0px 10px;
+  font-size: bodyFontSize;
+}

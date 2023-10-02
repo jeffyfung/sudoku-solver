@@ -39,7 +39,7 @@ const Functions: React.FC<FunctionsProps> = ({ gridData, handleRotationAnimation
           </button>
           <div className={styles.tooltipContainer}>
             <Tooltip className="test" title="Solve the sudoku puzzle" arrow>
-              <InfoIcon />
+              <InfoIcon className={styles.infoIcon} />
             </Tooltip>
           </div>
           <button className={styles.button} onClick={() => handleClick(ButtonType.HINT)}>
@@ -47,13 +47,13 @@ const Functions: React.FC<FunctionsProps> = ({ gridData, handleRotationAnimation
           </button>
           <div className={styles.tooltipContainer}>
             <Tooltip title="Fill 5 empty cells" arrow>
-              <InfoIcon />
+              <InfoIcon className={styles.infoIcon} />
             </Tooltip>
           </div>
           <button className={styles.button}>Check Solution</button>
           <div className={styles.tooltipContainer}>
             <Tooltip title="Return false if the puzzle has no solution" arrow>
-              <InfoIcon />
+              <InfoIcon className={styles.infoIcon} />
             </Tooltip>
           </div>
         </div>
