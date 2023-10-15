@@ -12,10 +12,11 @@ const Page: React.FC<{}> = () => {
   const matrix = new Array(9).fill("").map(() => new Array(9).fill(""));
   const [gridData, setGridData] = useState<(number | string)[][]>(matrix);
   const [blank, setBlank] = useState<boolean[][]>(new Array(9).fill("").map(() => new Array(9).fill(true)));
-  const [showAni, setShowAni] = useState<boolean>(false);
+  const [solved, setSolved] = useState<boolean>(false);
   const [showMessage, setShowMessage] = useState<boolean>(true);
 
   const handleInputChange = (row: number, col: number, value: string) => {
+    if (solved) return;
     if (arrowKeys.includes(value)) return handleArrowKeys(row, col, value);
     if (deleteKeys.includes(value)) return handleDeleteKeys(row, col);
     const val = parseInt(value);
@@ -71,7 +72,7 @@ const Page: React.FC<{}> = () => {
   };
 
   const showAnimation = (gridState: number[][]) => {
-    setShowAni(true);
+    setSolved(true);
     setGridData(gridState);
   };
 
@@ -87,7 +88,7 @@ const Page: React.FC<{}> = () => {
                     <td className={styles.cell} key={colIndex}>
                       <input
                         className={clsx(styles.input, {
-                          [styles.animation]: showAni && blank[rowIndex][colIndex],
+                          [styles.animation]: solved && blank[rowIndex][colIndex],
                           [styles.highlight]: blank[rowIndex][colIndex],
                         })}
                         data-row={rowIndex}
