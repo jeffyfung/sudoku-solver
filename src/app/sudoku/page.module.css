@@ -3,6 +3,7 @@
   flex-direction: row;
   margin-top: 40px;
   font-family: var(--font-mono);
+  justify-content: space-evenly;
 }
 
 .container {

@@ -1,7 +1,9 @@
+import { DancingLink } from "@/app/modules/dancing-link";
+import { IncompleteSudokuGrid, SudokuService } from "@/app/modules/sudoku";
 import { NextRequest, NextResponse } from "next/server";
 
 export interface SolveRequestType {
-  currentGridState: (string | number)[][];
+  currentGridState: IncompleteSudokuGrid;
 }
 
 export interface SolveReturnType {
@@ -10,15 +12,22 @@ export interface SolveReturnType {
 
 export const POST = async (request: NextRequest) => {
   try {
-    const data = (await request.json()) as SolveRequestType;
+    const { currentGridState } = (await request.json()) as SolveRequestType;
 
-    const temp = new Array(9).fill(0).map(() => new Array(9).fill(0));
+    // construct a constrain table based on current input
+    const constraintMatrix = SudokuService.constructConstraintMatrix(currentGridState);
+    const dlx = new DancingLink();
+    const solutions = dlx.search(constraintMatrix);
 
-    const responseObj: SolveReturnType = {
-      outputGridState: temp,
-    };
+    // TODO:
+    if (!solutions) throw new Error("No solution found");
 
-    return NextResponse.json(responseObj);
+    const outputGridState = currentGridState.map((row) => row.map((cell) => (typeof cell === "string" ? 0 : cell)));
+    solutions[0].forEach((placement) => {
+      outputGridState[placement.row][placement.col] = placement.val;
+    });
+
+    return NextResponse.json<SolveReturnType>({ outputGridState });
   } catch (error: any) {
     console.error(error);
     return NextResponse.json({ error: error.message }, { status: 500 });
