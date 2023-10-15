@@ -47,18 +47,19 @@
   }
 }
 
-.rotationAnimation {
-  animation: rotateAndZoom 0.8s linear;
+.highlight {
+  color: #3e3ec5;
 }
 
-@keyframes rotateAndZoom {
-  0% {
-    transform: rotate(0deg) scale(0.3);
+.animation {
+  animation: fadeIn 0.8s linear;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
   }
-  50% {
-    transform: rotate(180deg) scale(0.65);
-  }
-  100% {
-    transform: rotate(360deg) scale(1);
+  to {
+    opacity: 1;
   }
 }

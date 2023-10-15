@@ -12,7 +12,7 @@ enum ButtonType {
 
 export interface FunctionsProps {
   gridData: (string | number)[][];
-  handleRotationAnimation: (gridState: (string | number)[][]) => void;
+  handleRotationAnimation: (gridState: number[][]) => void;
 }
 
 const Functions: React.FC<FunctionsProps> = ({ gridData, handleRotationAnimation }) => {

@@ -70,13 +70,9 @@ const Page: React.FC<{}> = () => {
     });
   };
 
-  const handleRotationAnimation = (gridState: (string | number)[][]) => {
+  const showAnimation = (gridState: number[][]) => {
     setShowAni(true);
     setGridData(gridState);
-    setTimeout(() => {
-      setBlank(new Array(9).fill("").map(() => new Array(9).fill(false)));
-      setShowAni(false);
-    }, 600);
   };
 
   return (
@@ -90,7 +86,10 @@ const Page: React.FC<{}> = () => {
                   {row.map((col, colIndex) => (
                     <td className={styles.cell} key={colIndex}>
                       <input
-                        className={clsx(styles.input, { [styles.rotationAnimation]: showAni && blank[rowIndex][colIndex] })} //
+                        className={clsx(styles.input, {
+                          [styles.animation]: showAni && blank[rowIndex][colIndex],
+                          [styles.highlight]: blank[rowIndex][colIndex],
+                        })}
                         data-row={rowIndex}
                         data-col={colIndex}
                         type="text"
@@ -105,7 +104,7 @@ const Page: React.FC<{}> = () => {
             </tbody>
           </table>
         </div>
-        <Functions gridData={gridData} handleRotationAnimation={handleRotationAnimation} />
+        <Functions gridData={gridData} handleRotationAnimation={showAnimation} />
       </div>
       <div>
         <MessageBar
