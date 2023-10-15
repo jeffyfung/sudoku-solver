@@ -1,8 +1,8 @@
-import { axioInstance } from "@/app/util/axios";
 import styles from "./functions.module.css";
 import { Tooltip } from "@mui/material";
 import InfoIcon from "@mui/icons-material/Info";
 import { SolveRequestType, SolveReturnType } from "@/app/api/solve/route";
+import { axioInstance } from "@/app/modules/axios";
 
 enum ButtonType {
   SOLVE = "solve",
