@@ -5,6 +5,7 @@ import styles from "./page.module.css";
 import Functions from "./functions/functions";
 import clsx from "clsx";
 import { MessageBar } from "../components/snackbar/message-bar";
+import { Output } from "./output/output";
 
 const Page: React.FC<{}> = () => {
   const arrowKeys = ["ArrowDown", "ArrowUp", "ArrowRight", "ArrowLeft"];
@@ -14,6 +15,7 @@ const Page: React.FC<{}> = () => {
   const [blank, setBlank] = useState<boolean[][]>(new Array(9).fill("").map(() => new Array(9).fill(true)));
   const [solved, setSolved] = useState<boolean>(false);
   const [showMessage, setShowMessage] = useState<boolean>(true);
+  const [outputText, setOutputText] = useState<string | null>(null);
 
   const handleInputChange = (row: number, col: number, value: string) => {
     if (solved) return;
@@ -76,6 +78,13 @@ const Page: React.FC<{}> = () => {
     setGridData(gridState);
   };
 
+  const resetSudoku = () => {
+    setSolved(false);
+    setGridData(new Array(9).fill("").map(() => new Array(9).fill("")));
+    setBlank(new Array(9).fill("").map(() => new Array(9).fill(true)));
+    setOutputText(null);
+  };
+
   return (
     <>
       <div className={styles.pageContainer}>
@@ -105,7 +114,10 @@ const Page: React.FC<{}> = () => {
             </tbody>
           </table>
         </div>
-        <Functions gridData={gridData} handleRotationAnimation={showAnimation} />
+        <div className={styles.panelContainer}>
+          <Functions gridData={gridData} handleAnimation={showAnimation} handleReset={resetSudoku} handleMessage={setOutputText} />
+          <Output text={outputText} />
+        </div>
       </div>
       <div>
         <MessageBar

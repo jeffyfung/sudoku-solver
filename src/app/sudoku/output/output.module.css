@@ -1,0 +1,11 @@
+.container {
+  composes: container from "../functions/functions.module.css";
+}
+
+.legend {
+  composes: legend from "../functions/functions.module.css";
+}
+
+.content {
+  font-family: var(--font-mono);
+}

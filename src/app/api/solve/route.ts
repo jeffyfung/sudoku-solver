@@ -6,9 +6,21 @@ export interface SolveRequestType {
   currentGridState: IncompleteSudokuGrid;
 }
 
-export interface SolveReturnType {
+export interface SolveReturnBaseType {
+  solved: boolean;
+  message: string;
+}
+
+export interface SolveReturnSuccessType extends SolveReturnBaseType {
+  solved: true;
   outputGridState: number[][];
 }
+
+export interface SolveReturnFailureType extends SolveReturnBaseType {
+  solved: false;
+}
+
+export type SolveReturnType = SolveReturnSuccessType | SolveReturnFailureType;
 
 export const POST = async (request: NextRequest) => {
   try {
@@ -19,17 +31,31 @@ export const POST = async (request: NextRequest) => {
     const dlx = new DancingLink();
     const solutions = dlx.search(constraintMatrix);
 
-    // TODO:
-    if (!solutions) throw new Error("No solution found");
+    if (!solutions.length) {
+      return NextResponse.json<SolveReturnType>({
+        solved: false,
+        message: "No solution found",
+      });
+    }
 
     const outputGridState = currentGridState.map((row) => row.map((cell) => (typeof cell === "string" ? 0 : cell)));
     solutions[0].forEach((placement) => {
       outputGridState[placement.row][placement.col] = placement.val;
     });
 
-    return NextResponse.json<SolveReturnType>({ outputGridState });
+    return NextResponse.json<SolveReturnType>({
+      solved: true,
+      message: "Sudoku solved!",
+      outputGridState,
+    });
   } catch (error: any) {
     console.error(error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json<SolveReturnType>(
+      {
+        solved: false,
+        message: error.message,
+      },
+      { status: 500 }
+    );
   }
 };
