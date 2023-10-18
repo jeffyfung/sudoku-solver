@@ -3,9 +3,9 @@
 import { useState } from "react";
 import styles from "./page.module.css";
 import Functions from "./functions/functions";
-import clsx from "clsx";
-import { MessageBar } from "../components/snackbar/message-bar";
+import { MessageBar } from "../../lib/components/snackbar/message-bar";
 import { Output } from "./output/output";
+import { SudokuGrid } from "./grid/grid";
 
 const Page: React.FC<{}> = () => {
   const arrowKeys = ["ArrowDown", "ArrowUp", "ArrowRight", "ArrowLeft"];
@@ -88,32 +88,7 @@ const Page: React.FC<{}> = () => {
   return (
     <>
       <div className={styles.pageContainer}>
-        <div className={styles.container}>
-          <table className={styles.table}>
-            <tbody>
-              {gridData.map((row, rowIndex) => (
-                <tr className={styles.row} key={rowIndex}>
-                  {row.map((col, colIndex) => (
-                    <td className={styles.cell} key={colIndex}>
-                      <input
-                        className={clsx(styles.input, {
-                          [styles.animation]: solved && blank[rowIndex][colIndex],
-                          [styles.highlight]: blank[rowIndex][colIndex],
-                        })}
-                        data-row={rowIndex}
-                        data-col={colIndex}
-                        type="text"
-                        value={col}
-                        onKeyDown={(e) => handleInputChange(rowIndex, colIndex, e.key)}
-                        onChange={() => {}}
-                      />
-                    </td>
-                  ))}
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        <SudokuGrid gridData={gridData} blank={blank} solved={solved} handleInputChange={handleInputChange} />
         <div className={styles.panelContainer}>
           <Functions gridData={gridData} handleAnimation={showAnimation} handleReset={resetSudoku} handleMessage={setOutputText} />
           <Output text={outputText} />

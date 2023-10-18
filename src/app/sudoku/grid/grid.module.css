@@ -1,20 +1,4 @@
-.pageContainer {
-  display: flex;
-  flex-direction: row;
-  margin-top: 40px;
-  font-family: var(--font-mono);
-  justify-content: space-evenly;
-}
-
-.panelContainer {
-  width: 40%;
-  padding: 0 14px;
-  display: flex;
-  flex-direction: column;
-  gap: 2vh;
-}
-
-/* .container {
+.container {
   width: 60%;
   max-width: 700px;
 }
@@ -70,4 +54,4 @@
   to {
     opacity: 1;
   }
-} */
+}

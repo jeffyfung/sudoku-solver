@@ -1,26 +1,17 @@
 import { DancingLink } from "@/app/modules/dancing-link";
 import { IncompleteSudokuGrid, SudokuService } from "@/app/modules/sudoku";
+import { ServerResponse } from "@/lib/interfaces/server-response";
 import { NextRequest, NextResponse } from "next/server";
 
 export interface SolveRequestType {
   currentGridState: IncompleteSudokuGrid;
 }
 
-export interface SolveReturnBaseType {
+export interface SolveReturnType {
   solved: boolean;
-  message: string;
+  numSolution: number;
+  outputGridState?: number[][];
 }
-
-export interface SolveReturnSuccessType extends SolveReturnBaseType {
-  solved: true;
-  outputGridState: number[][];
-}
-
-export interface SolveReturnFailureType extends SolveReturnBaseType {
-  solved: false;
-}
-
-export type SolveReturnType = SolveReturnSuccessType | SolveReturnFailureType;
 
 export const POST = async (request: NextRequest) => {
   try {
@@ -32,9 +23,12 @@ export const POST = async (request: NextRequest) => {
     const solutions = dlx.search(constraintMatrix);
 
     if (!solutions.length) {
-      return NextResponse.json<SolveReturnType>({
-        solved: false,
+      return NextResponse.json<ServerResponse<SolveReturnType>>({
+        success: true,
         message: "No solution found",
+        payload: {
+          solved: false,
+        },
       });
     }
 
@@ -43,17 +37,26 @@ export const POST = async (request: NextRequest) => {
       outputGridState[placement.row][placement.col] = placement.val;
     });
 
-    return NextResponse.json<SolveReturnType>({
-      solved: true,
-      message: "Sudoku solved!",
-      outputGridState,
+    return NextResponse.json<ServerResponse<SolveReturnType>>({
+      success: true,
+      message:
+        solutions.length > 1 //
+          ? solutions.length === dlx.solutionLimit
+            ? `${dlx.solutionLimit} or more solutions found. Showing the first one.`
+            : `${solutions.length} solutions found. Showing the first one.`
+          : "Returned the only solution",
+      payload: {
+        solved: true,
+        numSolution: solutions.length,
+        outputGridState,
+      },
     });
   } catch (error: any) {
     console.error(error);
-    return NextResponse.json<SolveReturnType>(
+    return NextResponse.json<ServerResponse<SolveReturnType>>(
       {
-        solved: false,
-        message: error.message,
+        success: false,
+        message: `Error :: ${error.message}`,
       },
       { status: 500 }
     );

@@ -1,12 +1,13 @@
 import styles from "./functions.module.css";
-import { Tooltip } from "@mui/material";
+import { Button, Tooltip } from "@mui/material";
 import InfoIcon from "@mui/icons-material/Info";
 import { SolveRequestType, SolveReturnType } from "@/app/api/solve/route";
 import { axioInstance } from "@/app/modules/axios";
+import { ServerResponse } from "@/lib/interfaces/server-response";
 
 enum ButtonType {
   SOLVE = "solve",
-  HINT = "hint",
+  GENERATE = "generate",
   CHECK = "check",
 }
 
@@ -19,18 +20,20 @@ export interface FunctionsProps {
 
 const Functions: React.FC<FunctionsProps> = ({ gridData, handleAnimation, handleReset, handleMessage }) => {
   const handleClick = async (type: ButtonType) => {
-    switch (type) {
-      case ButtonType.SOLVE:
-        const payload: SolveRequestType = { currentGridState: gridData };
-        const { data } = await axioInstance.post<SolveReturnType>("/api/solve", payload);
-        if (data.solved) {
-          handleAnimation(structuredClone(data.outputGridState));
-        } else {
-          handleMessage(data.message);
+    if ([ButtonType.SOLVE, ButtonType.CHECK].includes(type)) {
+      const payload: SolveRequestType = { currentGridState: gridData };
+      const { data } = await axioInstance.post<ServerResponse<SolveReturnType>>("/api/solve", payload);
+      if (type === ButtonType.SOLVE) {
+        if (data.success && data.payload.solved) {
+          handleAnimation(structuredClone(data.payload.outputGridState));
         }
-      default:
-        // TODO: other api endpoints
-        break;
+        handleMessage(data.message);
+      } else {
+        const message = data.payload.solved ? `${data.payload.numSolution} solution(s) found` : "No solution found";
+        handleMessage(message);
+      }
+    } else {
+      // TODO: other api endpoints
     }
   };
 
@@ -46,22 +49,24 @@ const Functions: React.FC<FunctionsProps> = ({ gridData, handleAnimation, handle
             <InfoIcon className={styles.infoIcon} />
           </Tooltip>
         </div>
-        <button className={styles.button} onClick={() => handleClick(ButtonType.HINT)}>
-          Get Hint
+        <button className={styles.button} onClick={() => handleClick(ButtonType.CHECK)}>
+          Check Solution
         </button>
         <div className={styles.tooltipContainer}>
-          <Tooltip title="Fill 5 empty cells" arrow>
+          <Tooltip title="Get the number of solutions for the sudoku puzzle" arrow>
             <InfoIcon className={styles.infoIcon} />
           </Tooltip>
         </div>
-        <button className={styles.button}>Check Solution</button>
+        <button className={styles.button} onClick={() => handleClick(ButtonType.GENERATE)}>
+          Generate Puzzle
+        </button>
         <div className={styles.tooltipContainer}>
-          <Tooltip title="Return false if the puzzle has no solution" arrow>
+          <Tooltip title="Generate a random sudoku puzzle" arrow>
             <InfoIcon className={styles.infoIcon} />
           </Tooltip>
         </div>
         <button className={styles.button} onClick={handleReset}>
-          Reset Sudoku
+          Reset
         </button>
       </div>
     </fieldset>

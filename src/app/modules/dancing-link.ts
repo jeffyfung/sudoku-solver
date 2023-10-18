@@ -5,7 +5,7 @@ import { Placement } from "./sudoku";
 export type Solution = Placement[];
 
 export class DancingLink {
-  private solutionLimit: number;
+  solutionLimit: number;
   private solutionList: Solution[];
 
   constructor(solutionLimit: number = 10) {
