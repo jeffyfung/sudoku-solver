@@ -88,6 +88,7 @@ const Page: React.FC<{}> = () => {
   const resetSudoku = () => {
     setGridData(new Array(9).fill("").map(() => new Array(9).fill("")));
     setOutputText(null);
+    setGenerated(new Array(9).fill("").map(() => new Array(9).fill(false)));
     resetGridState();
   };
 
