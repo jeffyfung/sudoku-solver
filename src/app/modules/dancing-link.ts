@@ -1,5 +1,6 @@
 import { ColumnObject } from "./storage-objects/column-object";
-import { DataObject } from "./storage-objects/data-object";
+import { DataObject, isDataObject } from "./storage-objects/data-object";
+import { Strategy } from "./strategy";
 import { Placement } from "./sudoku";
 
 export type Solution = Placement[];
@@ -7,8 +8,16 @@ export type Solution = Placement[];
 export class DancingLink {
   solutionLimit: number;
   private solutionList: Solution[];
+  private constraintStrategy: (root: ColumnObject) => ColumnObject;
+  private placementStrategy: (columnHeader: ColumnObject) => DataObject[];
 
-  constructor(solutionLimit: number = 10) {
+  constructor(
+    solutionLimit: number = 10, //
+    placementStrategy: (columnHeader: ColumnObject) => DataObject[] = Strategy.normalPlacementOrder,
+    constraintStrategy: (root: ColumnObject) => ColumnObject = Strategy.leastSatisfiedConstraint
+  ) {
+    this.constraintStrategy = constraintStrategy;
+    this.placementStrategy = placementStrategy;
     this.solutionLimit = solutionLimit;
     this.solutionList = [];
   }
@@ -24,41 +33,41 @@ export class DancingLink {
       this.solutionList.push(solution);
       return this.solutionList.length === this.solutionLimit;
     }
-    const colHeader = this.pickColumn(root);
+    const colHeader = this.constraintStrategy(root);
     this.cover(colHeader);
-    let currentRow = colHeader.down;
-    while (currentRow !== colHeader) {
-      if (!isDataObject(currentRow)) throw new Error("currentRow is not a DataObject");
-      let currentCol = currentRow.right;
-      while (currentCol !== currentRow) {
+    for (const row of this.placementStrategy(colHeader)) {
+      let currentCol = row.right;
+      while (currentCol !== row) {
         this.cover(currentCol.column);
         currentCol = currentCol.right;
       }
-      const terminate = this.dfsSearch(root, solution.concat(currentRow.map));
+      const terminate = this.dfsSearch(root, solution.concat(row.map));
       if (terminate) return terminate;
-      currentCol = currentRow.left;
-      while (currentCol !== currentRow) {
+      currentCol = row.left;
+      while (currentCol !== row) {
         this.uncover(currentCol.column);
         currentCol = currentCol.left;
       }
-      currentRow = currentRow.down;
     }
+    // let currentRow = colHeader.down;
+    // while (currentRow !== colHeader) {
+    //   if (!isDataObject(currentRow)) throw new Error("currentRow is not a DataObject");
+    //   let currentCol = currentRow.right;
+    //   while (currentCol !== currentRow) {
+    //     this.cover(currentCol.column);
+    //     currentCol = currentCol.right;
+    //   }
+    //   const terminate = this.dfsSearch(root, solution.concat(currentRow.map));
+    //   if (terminate) return terminate;
+    //   currentCol = currentRow.left;
+    //   while (currentCol !== currentRow) {
+    //     this.uncover(currentCol.column);
+    //     currentCol = currentCol.left;
+    //   }
+    //   currentRow = currentRow.down;
+    // }
     this.uncover(colHeader);
     return false;
-  }
-
-  pickColumn(root: ColumnObject): ColumnObject {
-    let minCol = root.right;
-    let minColSize = root.right.size;
-    let currentCol = root.right.right;
-    while (currentCol !== root) {
-      if (currentCol.size < minColSize) {
-        minColSize = currentCol.size;
-        minCol = currentCol;
-      }
-      currentCol = currentCol.right;
-    }
-    return minCol;
   }
 
   cover(col: ColumnObject): void {
@@ -95,7 +104,3 @@ export class DancingLink {
     col.left.right = col;
   }
 }
-
-const isDataObject = (object: ColumnObject | DataObject): object is DataObject => {
-  return (object as DataObject).column !== undefined;
-};

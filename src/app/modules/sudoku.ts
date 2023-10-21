@@ -1,3 +1,4 @@
+import _ from "lodash";
 import { ColumnObject } from "./storage-objects/column-object";
 import { DataObject } from "./storage-objects/data-object";
 
@@ -48,6 +49,27 @@ export class SudokuService {
       }
     }
     return matrixRoot;
+  }
+
+  static generateEmptyGrid(): IncompleteSudokuGrid {
+    return new Array(SudokuService.size).fill("").map((_) => new Array(SudokuService.size).fill(""));
+  }
+
+  static prefillFirstRow(grid: IncompleteSudokuGrid): IncompleteSudokuGrid {
+    const firstRow = new Array(SudokuService.size).fill("").map((_, i) => i + 1);
+    const outGrid = structuredClone(grid);
+    outGrid[0] = _.shuffle(firstRow);
+    return outGrid;
+  }
+
+  static getRandomCellOrder(): Omit<Placement, "val">[] {
+    const cells: Omit<Placement, "val">[] = [];
+    for (let i = 0; i < SudokuService.size; i++) {
+      for (let j = 0; j < SudokuService.size; j++) {
+        cells.push({ row: i, col: j });
+      }
+    }
+    return _.shuffle(cells);
   }
 
   private static setMatrixRow(columns: ColumnObject[], placement: Placement): void {

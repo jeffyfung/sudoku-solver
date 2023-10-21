@@ -6,9 +6,11 @@ export interface ServerBaseResponse {
 }
 
 export interface ServerSuccessResponse<T> extends ServerBaseResponse {
+  success: true;
   payload: T;
 }
 
 export interface ServerFailureResponse extends ServerBaseResponse {
+  success: false;
   payload?: any;
 }

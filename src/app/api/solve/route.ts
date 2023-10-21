@@ -28,6 +28,7 @@ export const POST = async (request: NextRequest) => {
         message: "No solution found",
         payload: {
           solved: false,
+          numSolution: 0,
         },
       });
     }

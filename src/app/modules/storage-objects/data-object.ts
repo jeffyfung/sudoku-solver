@@ -18,3 +18,7 @@ export class DataObject {
     this.map = map;
   }
 }
+
+export const isDataObject = (object: ColumnObject | DataObject): object is DataObject => {
+  return (object as DataObject).column !== undefined;
+};

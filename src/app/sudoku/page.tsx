@@ -6,6 +6,7 @@ import Functions from "./functions/functions";
 import { MessageBar } from "../../lib/components/snackbar/message-bar";
 import { Output } from "./output/output";
 import { SudokuGrid } from "./grid/grid";
+import { IncompleteSudokuGrid } from "../modules/sudoku";
 
 const Page: React.FC<{}> = () => {
   const arrowKeys = ["ArrowDown", "ArrowUp", "ArrowRight", "ArrowLeft"];
@@ -13,6 +14,7 @@ const Page: React.FC<{}> = () => {
   const matrix = new Array(9).fill("").map(() => new Array(9).fill(""));
   const [gridData, setGridData] = useState<(number | string)[][]>(matrix);
   const [blank, setBlank] = useState<boolean[][]>(new Array(9).fill("").map(() => new Array(9).fill(true)));
+  const [generated, setGenerated] = useState<boolean[][]>(new Array(9).fill("").map(() => new Array(9).fill(true)));
   const [solved, setSolved] = useState<boolean>(false);
   const [showMessage, setShowMessage] = useState<boolean>(true);
   const [outputText, setOutputText] = useState<string | null>(null);
@@ -73,24 +75,34 @@ const Page: React.FC<{}> = () => {
     });
   };
 
-  const showAnimation = (gridState: number[][]) => {
+  const handleAnswer = (gridState: number[][]) => {
     setSolved(true);
     setGridData(gridState);
   };
 
-  const resetSudoku = () => {
+  const resetGridState = (blankMap?: boolean[][]) => {
     setSolved(false);
+    setBlank(blankMap ? blankMap : new Array(9).fill("").map(() => new Array(9).fill(true)));
+  };
+
+  const resetSudoku = () => {
     setGridData(new Array(9).fill("").map(() => new Array(9).fill("")));
-    setBlank(new Array(9).fill("").map(() => new Array(9).fill(true)));
     setOutputText(null);
+    resetGridState();
+  };
+
+  const showPuzzle = (gridState: IncompleteSudokuGrid) => {
+    resetGridState(gridState.map((row) => row.map((cell) => cell === "")));
+    setGridData(gridState);
+    setGenerated(gridState.map((row) => row.map((cell) => cell !== "")));
   };
 
   return (
     <>
       <div className={styles.pageContainer}>
-        <SudokuGrid gridData={gridData} blank={blank} solved={solved} handleInputChange={handleInputChange} />
+        <SudokuGrid gridData={gridData} blank={blank} solved={solved} generated={generated} handleInputChange={handleInputChange} />
         <div className={styles.panelContainer}>
-          <Functions gridData={gridData} handleAnimation={showAnimation} handleReset={resetSudoku} handleMessage={setOutputText} />
+          <Functions gridData={gridData} handleAnswer={handleAnswer} handleReset={resetSudoku} handleMessage={setOutputText} showPuzzle={showPuzzle} />
           <Output text={outputText} />
         </div>
       </div>

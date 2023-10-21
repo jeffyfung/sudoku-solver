@@ -39,8 +39,12 @@
   }
 }
 
-.highlight {
+.highlightBlue {
   color: #3e3ec5;
+}
+
+.highlightGreen {
+  color: #2eef64;
 }
 
 .animation {
