@@ -15,7 +15,7 @@ const Header: React.FC<{}> = () => {
       <div>
         <div className={styles.appTitle}>Sudoku Solver</div>
         <div className={styles.githubLink}>
-          <a href="https://atomic-flow-builder.vercel.app/" className={styles.githubButton} target="_blank" rel="noopener noreferrer">
+          <a href="https://github.com/jeffyfung/sudoku-solver/" className={styles.githubButton} target="_blank" rel="noopener noreferrer">
             <GitHubIcon className={styles.githubIcon} />
             <span>Code</span>
           </a>
