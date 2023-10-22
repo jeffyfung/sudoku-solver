@@ -23,6 +23,3 @@ const Page: React.FC<{}> = () => {
 };
 
 export default Page;
-
-// TODO: SEO - vercel/og?
-// TODO: add vercel analytics

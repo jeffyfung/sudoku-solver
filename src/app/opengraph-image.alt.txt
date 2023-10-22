@@ -1,0 +1,1 @@
+A Sudoku solver and generator with a colorful theme
