@@ -12,7 +12,6 @@ export interface MessageBarProps {
   handleClose: () => void;
 }
 
-// TODO: transition / animation
 export const MessageBar: React.FC<MessageBarProps> = ({ name, open, title, message, handleClose }) => {
   const [ignore, setIgnore] = useState<boolean>(true);
 
@@ -22,7 +21,7 @@ export const MessageBar: React.FC<MessageBarProps> = ({ name, open, title, messa
 
   useEffect(() => {
     setIgnore(localStorage.getItem(`message-${name}`) === "ignored");
-  }, []);
+  }, [name]);
 
   return (
     open &&
