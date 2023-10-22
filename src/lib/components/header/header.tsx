@@ -21,9 +21,14 @@ const Header: React.FC<{}> = () => {
           </a>
         </div>
       </div>
-      {pathName !== "/" && (
+      {pathName !== "/about" && (
         <div className={styles.nav}>
-          <Link href="/">About</Link>
+          <Link href="/about">About</Link>
+        </div>
+      )}
+      {pathName !== "/sudoku" && (
+        <div className={styles.nav}>
+          <Link href="/sudoku">Try It Out</Link>
         </div>
       )}
     </div>

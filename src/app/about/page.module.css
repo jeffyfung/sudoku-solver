@@ -1,0 +1,21 @@
+.pageContainer {
+  margin-top: 40px;
+  font-family: var(--font-mono);
+  background-color: #575959f2;
+  padding: 15px;
+  text-align: justify;
+  border-radius: 10px;
+}
+
+p.paragraph {
+  line-height: 1.5;
+  margin-bottom: 20px;
+}
+
+p.paragraph::first-letter {
+  font-size: 200%;
+}
+
+.link {
+  color: #d693b4;
+}
