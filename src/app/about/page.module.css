@@ -19,3 +19,7 @@ p.paragraph::first-letter {
 .link {
   color: #d693b4;
 }
+
+.link:hover {
+  text-shadow: 2px 2px #191818;
+}
